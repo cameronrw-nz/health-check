@@ -1,0 +1,36 @@
+﻿@using HealthCheck.Data
+@using System.Text.Json;
+@page "/"
+@inject HttpClient Http
+@inject HealthCheckService HealthCheckService
+
+<PageTitle>Index</PageTitle>
+
+<h1>Health Check</h1>
+
+<div>Results Retrieved at: @this.Value?.Date.ToLongTimeString()</div>
+
+@foreach (ResultSet resultSet in (Value?.ResultSets ?? new ResultSet[0]))
+{
+    <ResultSetDisplay ResultSet="@resultSet" />
+}
+
+
+@code {
+    private HealthCheckResult Value = null;
+
+    private string ResultAsString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        System.Timers.Timer t = new System.Timers.Timer();
+        t.Elapsed += async (s, e) =>
+        {
+            Value = HealthCheckService.HealthCheck;
+            ResultAsString = JsonSerializer.Serialize(HealthCheckService.HealthCheck);
+            await InvokeAsync(StateHasChanged);
+        };
+        t.Interval = 1000;
+        t.Start();
+    }
+}

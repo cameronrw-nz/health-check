@@ -1,0 +1,29 @@
+{
+    "ResultSets":  [
+                       {
+                           "Name":  "nginx",
+                           "Results":  [
+                                           {
+                                               "Name":  "ImagePulled",
+                                               "Status":  1,
+                                               "HelpText":  ""
+                                           },
+                                           {
+                                               "Name":  "ContainerRunning",
+                                               "Status":  1,
+                                               "HelpText":  ""
+                                           },
+                                           {
+                                               "Name":  "ContainerStopped",
+                                               "Status":  1,
+                                               "HelpText":  ""
+                                           },
+                                           {
+                                               "Name":  "ImageRemoved",
+                                               "Status":  1,
+                                               "HelpText":  ""
+                                           }
+                                       ]
+                       }
+                   ]
+}

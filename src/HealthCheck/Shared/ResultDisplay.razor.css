@@ -1,0 +1,15 @@
+﻿.help-text.error {
+    background-color: rgba(253, 171, 171, 0.1);
+    border: 1px solid rgb(255, 114, 114);
+    border-radius: 4px;
+    margin: 8px;
+    padding: 4px;
+}
+
+.help-text.warn {
+    background-color: rgba(247, 253, 171, 0.1);
+    border: 1px solid rgb(195, 211, 52);
+    border-radius: 4px;
+    margin: 8px;
+    padding: 4px;
+}

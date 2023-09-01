@@ -1,0 +1,44 @@
+﻿@using HealthCheck.Data
+@using BlazorBootstrap
+
+<div>
+    @if (Result?.Status == Status.Processing)
+    {
+        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+    }
+    else if (Result?.Status == Status.Success)
+    {
+        <Icon Name="IconName.Check" Color="IconColor.Success" />
+    }
+    else if (Result?.Status == Status.Warning)
+    {
+        <Icon Name="IconName.ExclamationTriangleFill" Color="IconColor.Warning" />
+    }
+    else if (Result?.Status == Status.Failure)
+    {
+        <Icon Name="IconName.XCircleFill" Color="IconColor.Danger" />
+    }
+    <span style="padding-left:8px;">@this.Result?.Name</span>
+</div>
+
+@if (!string.IsNullOrEmpty(Result?.HelpText) && Result.Status == Status.Warning)
+{
+    <div class="help-text warn">
+        @this.Result.HelpText
+    </div>
+}
+@if (!string.IsNullOrEmpty(Result?.HelpText) && Result.Status == Status.Failure)
+{
+    <div class="help-text error">
+        @this.Result.HelpText
+    </div>
+}
+
+@code {
+    [Parameter]
+    public HealthCheck.Data.Result Result { get; set; }
+
+    //public IconName IconString => Result.Status == "Processing" ? IconName.
+
+}
+
