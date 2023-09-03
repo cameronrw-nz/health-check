@@ -1,33 +1,74 @@
 ﻿@using HealthCheck.Data
 
 <div style="display:flex;">
-    @if (ResultSet?.Results.Any(result => result.Status == Status.Processing) == true)
-    {
-        <span class="spinner-grow spinner-grow-md" role="status" aria-hidden="true"></span>
-    }
-    else if (ResultSet?.Results.Any(result => result.Status == Status.Failure) == true)
-    {
-        <Icon Name="IconName.XCircleFill" Color="IconColor.Danger" Size="IconSize.x2" />
-    }
-    else if (ResultSet?.Results.All(result => result.Status == Status.Warning) == true)
-    {
-        <Icon Name="IconName.ExclamationTriangleFill" Color="IconColor.Warning" Size="IconSize.x2" />
-    }
-    else if (ResultSet?.Results.All(result => result.Status == Status.Success) == true)
-    {
-        <Icon Name="IconName.Check" Color="IconColor.Success" Size="IconSize.x2" />
-    }
-    <h3 style="padding-left:8px;">
+
+    <h2 style="padding-left:8px;">
         @this.ResultSet?.Name
-    </h3>
+    </h2>
+    <div class="result-statuses">
+        @if (ProcessingCount > 0)
+        {
+            <span class="result-status">
+                <Tooltip Title="@ProcessingTooltip" Placement="TooltipPlacement.Bottom">
+                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                </Tooltip>
+                @ProcessingCount
+            </span>
+        }
+
+        @if (SuccessCount > 0)
+        {
+
+            <span class="result-status">
+                <Tooltip Title="@SuccessTooltip" Placement="TooltipPlacement.Bottom">
+                    <Icon Name="IconName.Check" Color="IconColor.Success" />
+                </Tooltip>
+                @SuccessCount
+            </span>
+        }
+
+        @if (FailureCount > 0)
+        {
+            <span class="result-status">
+                <Tooltip Title="@WarningTooltip" Placement="TooltipPlacement.Bottom">
+                    <Icon Name="IconName.XCircleFill" Color="IconColor.Danger" />
+                </Tooltip>
+                @FailureCount
+            </span>
+        }
+        @if (WarningCount > 0)
+        {
+            <span class="result-status">
+                <Tooltip Title="@FailureTooltip" Placement="TooltipPlacement.Bottom">
+                    <Icon Name="IconName.ExclamationTriangleFill" Color="IconColor.Warning" />
+                </Tooltip>
+                @WarningCount
+            </span>
+        }
+    </div>
+
 </div>
 
-@foreach (Result result in (ResultSet?.Results ?? new Result[0]))
-{
-    <ResultDisplay Result="@result" />
-}
-
 @code {
+
+    public int ProcessingCount => ResultSet?.Results.Count(result => result.Status == Status.Processing) ?? 0;
+    public int FailureCount => ResultSet?.Results.Count(result => result.Status == Status.Failure) ?? 0;
+    public int WarningCount => ResultSet?.Results.Count(result => result.Status == Status.Warning) ?? 0;
+    public int SuccessCount => ResultSet?.Results.Count(result => result.Status == Status.Success) ?? 0;
+
+    public string ProcessingTooltip => GetTooltip(Status.Processing);
+    public string SuccessTooltip => GetTooltip(Status.Success);
+    public string WarningTooltip => GetTooltip(Status.Warning);
+    public string FailureTooltip => GetTooltip(Status.Failure);
+
     [Parameter]
-    public HealthCheck.Data.ResultSet ResultSet { get; set; }
+    public HealthCheck.Data.ResultSet? ResultSet { get; set; }
+
+    private string GetTooltip(Status status)
+    {
+        return string.Join(
+        "\n",
+        ResultSet?.Results.Where(result => result.Status == status).Select(r => r.Name) ?? new string[0]);
+
+    }
 }

@@ -18,9 +18,11 @@ public class Result
 {
     public string Name { get; set; }
 
+    public string? DisplayText { get; set; }
+
     public Status Status { get; set; }
 
-    public string? HelpText { get; set; }
+    public string[]? HelpText { get; set; }
 }
 
 public enum Status

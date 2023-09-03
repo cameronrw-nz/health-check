@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/HealthCheck/bin/Debug/net7.0/HealthCheck.dll",
+            "program": "${workspaceFolder}/src/HealthCheck/bin/Debug/net7.0/HealthCheck.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/HealthCheck",
+            "cwd": "${workspaceFolder}/src/HealthCheck",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
@@ -21,7 +21,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
+                "/Views": "${workspaceFolder}/src/Views"
             }
         },
         {

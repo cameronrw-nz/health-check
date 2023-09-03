@@ -13,3 +13,7 @@
     margin: 8px;
     padding: 4px;
 }
+
+.alert-header {
+    font-weight: bold;
+}

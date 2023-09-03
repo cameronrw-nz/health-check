@@ -3,20 +3,79 @@
 @page "/"
 @inject HttpClient Http
 @inject HealthCheckService HealthCheckService
+@inject IJSRuntime JS
 
 <PageTitle>Index</PageTitle>
 
 <h1>Health Check</h1>
 
-<div>Results Retrieved at: @this.Value?.Date.ToLongTimeString()</div>
+<div class="container">
+    <div class="row align-items-center mb-3">
+        <div style="width: unset;">
+            <Button Color="ButtonColor.Primary" @onclick="TriggerHealthCheck">
+                <Icon Name="IconName.ArrowClockwise" class="me-2"></Icon>
+                Refresh
+            </Button>
+        </div>
+        <div style="width: unset;">
+            <Switch @bind-Value="ShowSuccess" Label="Show success details..." />
+        </div>
+    </div>
 
-@foreach (ResultSet resultSet in (Value?.ResultSets ?? new ResultSet[0]))
-{
-    <ResultSetDisplay ResultSet="@resultSet" />
-}
+    <div class="row align-items-center mb-3">
+        <div class="col">Results Retrieved at: @this.Value?.Date.ToLongTimeString()</div>
+
+        <div class="col" style="text-align: end;">
+            <Button Color="ButtonColor.Secondary" @onclick="DownloadFileFromStream">
+                <Icon Name="IconName.Download" class="me-2"></Icon>
+                Download
+            </Button>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-3">
+        <div>
+            <Progress>
+                <ProgressBar Color="ProgressColor.Success" Width="@SuccessPercentage" />
+                <ProgressBar Color="ProgressColor.Warning" Width="@WarningPercentage" />
+                <ProgressBar Color="ProgressColor.Danger" Width="@FailureProgress" />
+                <ProgressBar Color="ProgressColor.Info" Type="ProgressType.StripedAndAnimated"
+                    Width="@ProcessingProgress" />
+            </Progress>
+        </div>
+    </div>
+
+    <div class="row align-items-center">
+        <Accordion>
+            @foreach (ResultSet resultSet in (Value?.ResultSets ?? new ResultSet[0]))
+            {
+                <AccordionItem>
+                    <TitleTemplate>
+                        <ResultSetDisplay ResultSet="@resultSet" />
+                    </TitleTemplate>
+                    <Content>
+                        @foreach (Result result in (resultSet?.Results.Where(r => ShowSuccess ? true : (r.Status ==
+                            Status.Warning
+                            || r.Status == Status.Failure)) ?? new Result[0]))
+                        {
+                            <ResultDisplay Result="@result" />
+                        }
+                        @if (!ShowSuccess && resultSet?.Results.Count(r => r.Status == Status.Warning || r.Status == Status.Failure) == 0) {
+                            <div>
+                                All checks succeeded.   
+                            </div>
+                        }
+                    </Content>
+                </AccordionItem>
+            }
+        </Accordion>
+    </div>
+</div>
 
 
 @code {
+
+    private bool ShowSuccess { get; set; } = true;
     private HealthCheckResult Value = null;
 
     private string ResultAsString = "";
@@ -32,5 +91,35 @@
         };
         t.Interval = 1000;
         t.Start();
+    }
+
+    public void TriggerHealthCheck()
+    {
+        HealthCheckService.TriggerHealthCheck();
+    }
+
+    public int ProcessingProgress => GetStatusPercentage(Status.Processing);
+    public int SuccessPercentage => GetStatusPercentage(Status.Success);
+    public int WarningPercentage => GetStatusPercentage(Status.Warning);
+    public int FailureProgress => GetStatusPercentage(Status.Failure);
+
+    private int GetStatusPercentage(Status status)
+    {
+        var allResults = Value?.ResultSets?.SelectMany(s => s.Results).ToList();
+
+        var totalCount = allResults?.Count ?? 1;
+
+        var statusCount = allResults?.Count(result => result.Status == status) ?? 0;
+
+        var percentage = statusCount * 100 / totalCount;
+
+        return percentage;
+    }
+
+    private async Task DownloadFileFromStream()
+    {
+        await JS.InvokeVoidAsync("downloadFileFromStream",
+        $"HealthCheckResults-{DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.fffK", System.Globalization.CultureInfo.InvariantCulture)}.json",
+        System.Text.Json.JsonSerializer.Serialize(Value));
     }
 }

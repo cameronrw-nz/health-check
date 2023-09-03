@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/HealthCheck.sln",
+                "${workspaceFolder}/src/HealthCheck.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/HealthCheck.sln",
+                "${workspaceFolder}/src/HealthCheck.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/HealthCheck.sln"
+                "${workspaceFolder}/src/HealthCheck.sln"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -1,27 +1,119 @@
 {
     "ResultSets":  [
                        {
+                           "Name":  "hosts",
+                           "Results":  [
+                                           {
+                                               "Name":  "ImagePulled",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerRunning",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerStopped",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ImageRemoved",
+                                               "Status":  1
+                                           }
+                                       ]
+                       },
+                       {
                            "Name":  "nginx",
                            "Results":  [
                                            {
                                                "Name":  "ImagePulled",
-                                               "Status":  1,
-                                               "HelpText":  ""
+                                               "Status":  1
                                            },
                                            {
                                                "Name":  "ContainerRunning",
-                                               "Status":  1,
-                                               "HelpText":  ""
+                                               "Status":  1
                                            },
                                            {
                                                "Name":  "ContainerStopped",
-                                               "Status":  1,
-                                               "HelpText":  ""
+                                               "Status":  2,
+                                               "HelpText":  [
+                                                                "The container couldn\u0027t be stopped. This could be because the container failed to terminate gracefully. You may need to manually delete the container."
+                                                            ]
                                            },
                                            {
                                                "Name":  "ImageRemoved",
-                                               "Status":  1,
-                                               "HelpText":  ""
+                                               "Status":  3,
+                                               "HelpText":  [
+                                                                "The image couldn\u0027t be removed. This could be because the container is still running. You may need to manually delete the container."
+                                                            ]
+                                           }
+                                       ]
+                       },
+                       {
+                           "Name":  "rabbitmq",
+                           "Results":  [
+                                           {
+                                               "Name":  "ImagePulled",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerRunning",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerStopped",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ImageRemoved",
+                                               "Status":  1
+                                           }
+                                       ]
+                       },
+                       {
+                           "Name":  "istio",
+                           "Results":  [
+                                           {
+                                               "Name":  "ImagePulled",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerRunning",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerStopped",
+                                               "Status":  2,
+                                               "HelpText":  [
+                                                                "The container couldn\u0027t be stopped. This could be because the container failed to terminate gracefully. You may need to manually delete the container."
+                                                            ]
+                                           },
+                                           {
+                                               "Name":  "ImageRemoved",
+                                               "Status":  3,
+                                               "HelpText":  [
+                                                                "The image couldn\u0027t be removed. This could be because the container is still running. You may need to manually delete the container."
+                                                            ]
+                                           }
+                                       ]
+                       },
+                       {
+                           "Name":  "application",
+                           "Results":  [
+                                           {
+                                               "Name":  "ImagePulled",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerRunning",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ContainerStopped",
+                                               "Status":  1
+                                           },
+                                           {
+                                               "Name":  "ImageRemoved",
+                                               "Status":  1
                                            }
                                        ]
                        }
